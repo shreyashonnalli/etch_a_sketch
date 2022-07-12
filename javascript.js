@@ -1,8 +1,10 @@
 let body = document.querySelector("body");
 let gridBox = document.querySelector(".grid-holder");
+gridBox.setAttribute('style','width:480px;height:480px;border:1px solid black;');
 let gridGeneratorButton = document.getElementById("gridGeneratorButton");
 let gridSize = null;
 let gridElement = new Array(gridSize);
+let gridElementSize = 0;
 let gridRow = new Array(gridSize);
 let drawTimer = null;
 initialiseGrid();
@@ -35,6 +37,10 @@ gridGeneratorButton.addEventListener('click',changeGridSize);
 
 function changeGridSize(){
   let gridSizeInput = parseInt(prompt("Please enter the new grid size","16"));
+  if (gridSizeInput >100){
+    alert("size too big!");
+    return;
+  }
   clearGrid(gridSize);
   initialiseGrid(gridSizeInput);
   gridbuttons = gridElement;
@@ -44,10 +50,13 @@ function changeGridSize(){
 
 function colourElement(e){
   if (e.type === 'mouseover' && !mouseDown) return;
-  e.target.setAttribute('style','background-color:aqua;border:1px solid black;min-width:30px;height:30px;');
+  e.target.setAttribute('style','background-color:aqua;');
+  e.target.style.width = gridElementSize;
+  e.target.style.height = gridElementSize;
 }
 
 function initialiseGrid(sizeOfGrid = 16){
+  gridElementSize = Math.floor(480/sizeOfGrid) + "px";
   gridSize = sizeOfGrid;
   gridElement = new Array(sizeOfGrid);
   gridRow = new Array(sizeOfGrid);
@@ -57,7 +66,8 @@ function initialiseGrid(sizeOfGrid = 16){
       gridRow[i] = document.createElement("div");
     }
     gridElement[i] = document.createElement("div");
-    gridElement[i].setAttribute('style','border:1px solid black;min-width:30px;height:30px;');
+    gridElement[i].style.width = gridElementSize;
+    gridElement[i].style.height = gridElementSize;
   }
 
   //this loop arranges elements into a grid
